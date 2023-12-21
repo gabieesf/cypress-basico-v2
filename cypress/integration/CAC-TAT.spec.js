@@ -99,12 +99,61 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('#white-background > form > button').click()           
     })
 
-    it.only('marca o tipo de atendimento "Feedback"', function(){
+    it('marca o tipo de atendimento "Feedback"', function(){
         cy.fillMandatoryFieldsAndSubmit()
         cy.get('#support-type > label:nth-child(4) > input[type=radio]').check()
         .should('have.value', 'feedback')                  
     })
 
+    it('marca cada tipo de atendimento', function(){
+        cy.fillMandatoryFieldsAndSubmit()
+        cy.get('input[type=radio]').each(function($radio){
+            cy.wrap($radio).check()
+            cy.wrap($radio).should('be.checked')
+        })                        
+    })
+    
+    it('marca ambos checkboxes, depois desmarca o último', function(){
+        cy.fillMandatoryFieldsAndSubmit()
+        cy.get('input[type=checkbox]')
+            .check().should('be.checked')
+            .last()
+            .uncheck()
+            .should('not.be.checked')                      
+    })
+
+    it('seleciona um arquivo da pasta fixtures', function(){
+        cy.fillMandatoryFieldsAndSubmit()
+        cy.get('input[type="file"]')
+            .should('not.have.value')
+            .selectFile('cypress/fixtures/example.json')
+            .should(function($input) {
+                expect($input[0].files[0].name).to.equal('example.json')
+            })
+    })
+
+    it('seleciona um arquivo simulando um drag-and-drop', function(){
+        cy.fillMandatoryFieldsAndSubmit()
+        cy.get('input[type="file"]')
+            .should('not.have.value')
+            .selectFile('cypress/fixtures/example.json')
+            // , {action: 'drag-drop'}
+            .should(function($input) {
+                expect($input[0].files[0].name).to.equal('example.json')
+            })            
+    })
+
+    it('verifica que a política de privacidade abre em outra aba sem a necessidade de um clique', function(){
+        cy.get('#privacy > a')
+        .should('have.attr','target','_blank')
+    })
+
+    it.only('acessa a página da política de privacidade removendo o target e então clicando no link', function(){
+        cy.get('#privacy > a').invoke('removeAttr', 'target')
+        .should('not.have.attr','target')
+    })
+
+    
 
 
     
