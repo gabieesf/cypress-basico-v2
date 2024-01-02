@@ -11,7 +11,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Check formatting
-        run: yarn run format:check
+        run: yarn install --check-files
       - name: Run Cypress
         uses: cypress-io/github-action@v2
         with:
