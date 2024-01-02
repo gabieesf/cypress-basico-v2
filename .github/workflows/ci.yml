@@ -16,5 +16,5 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           working-directory: web
-          install: false
+          install: true
           start: yarn serve
