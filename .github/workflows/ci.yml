@@ -8,5 +8,13 @@ jobs:
         uses: actions/checkout@v2
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
-      - name: Cypress run
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Check formatting
+        run: yarn run format:check
+      - name: Run Cypress
         uses: cypress-io/github-action@v2
+        with:
+          working-directory: web
+          install: false
+          start: yarn serve
